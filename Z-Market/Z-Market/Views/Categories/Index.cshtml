@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Categories</h2>
+
+@using (Html.BeginForm())
+{
+    <button id="btnGetCategories">Get Categories</button>
+    <button id="btnGetCategory">Get Category</button>
+    <button id="btnAddCategory">Add Category</button>
+    <button id="btnUpdateCategory">Update Category</button>
+    <button id="btnDeleteCategory">Delete Category</button>
+    <br /><br />
+    <input id="txtCategoryID" type="text" placeholder="Categoy ID" />
+    <input id="txtDescription" type="text" placeholder="Categoy Description" />
+    <br /><br />
+    <div id="lblMessage"></div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#btnGetCategories').on("click", function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/CategoriesAPI',
+                    dataType: 'json',
+                    cache: false
+                })
+                .success(function (data) {
+                    var outPut = '';
+                    for (var i = 0; i < data.length; i++) {
+                        outPut += '<hr/><br/>';
+                        outPut += '<b>Category ID:</b>' + data[i].CategoryID + '<br/>';
+                        outPut += '<b>Description:</b>' + data[i].Description + '<br/>';
+                    }
+                    $('#lblMessage').html(outPut);
+                })
+                .error(function (xhr, ajaxOptions, throwError) {
+                    $('#lblMessage').html("Error");
+                });
+                return false;
+            });
+            $('#btnGetCategory').on("click", function () {
+                return false;
+            });
+            $('#btnAddCategory').on("click", function () {
+                return false;
+            });
+            $('#btnUpdateCategory').on("click", function () {
+                return false;
+            });
+            $('#btnDeleteCategory').on("click", function () {
+                return false;
+            });
+
+            $(document).ajaxStart(function () {
+                $("#loading").show();
+            });
+            $(document).ajaxStop(function () {
+                $("#loading").hide();
+            });
+        });
+    </script>
+}
+
+<style type="text/css">
+    #loading {
+        display: none;
+        background-color: gray;
+        z-index: 999999;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        padding-top: 300px;
+        filter: alpha(opacity=75);
+        -khtml-opacity: 0.75;
+        -moz-opacity: 0.75;
+        opacity: 0.75;
+    }
+</style>
+<div id="loading"><img src="~/Images/loader.gif" /></div>
